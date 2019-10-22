@@ -31,6 +31,7 @@ public class MoveCapture implements MouseMotionListener {
 		int p = x * w / jp.getWidth(), q = y * h / jp.getHeight();
 		try {
 			gt.move(p, q);
+			Thread.sleep(15);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -44,6 +45,7 @@ public class MoveCapture implements MouseMotionListener {
 		int p = x * w / jp.getWidth(), q = y * h / jp.getHeight();
 		try {
 			gt.move(p, q);
+			Thread.sleep(15);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

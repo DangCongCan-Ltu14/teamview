@@ -17,24 +17,31 @@ import javax.swing.JTextField;
 import client.Rmi;
 import remote.Giaotiep;
 import teamview.act.KeyCapture;
+import teamview.act.MouseCapture;
+import teamview.act.MoveCapture;
+import teamview.act.WheelCapture;
 
 /**
  * author: amneiht - dang cong can
  */
 public class App extends JFrame {
 	public static void main(String[] args) {
-		App d = new App();
+		App d = new App("192.168.1.24");
+		//App d = new App();
 		GetScreen sc = new GetScreen(d.panel, d.image);
 		new Thread(sc).start();
 	}
 
 	public Giaotiep trmi;
+
 	public App(String s) {
 		trmi = GetRmi.get(s);
 		init();
 	}
+
 	public App() {
-		//trmi = new Rmi();
+		//
+		trmi = new Rmi();
 		init();
 	}
 
@@ -51,12 +58,14 @@ public class App extends JFrame {
 		JTextField textField = new JTextField();
 		textField.setColumns(10);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		addKeyListener(new KeyCapture());
-
+		addKeyListener(new KeyCapture(trmi));
+		addMouseWheelListener(new WheelCapture(trmi));
 		panel = new JPanel();
-		// panel.setFocusable(true);
-		// panel.addMouseMotionListener(new MoveCapture(panel, trmi));
-		// panel.addKeyListener(new KeyCapture());
+		panel.setFocusable(true);
+		
+		panel.addMouseListener(new MouseCapture(trmi));
+		panel.addMouseMotionListener(new MoveCapture(panel, trmi));
+
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
 				.createSequentialGroup().addContainerGap()
@@ -96,7 +105,7 @@ public class App extends JFrame {
 		try {
 			System.out.println(panel.getWidth() + "  " + panel.getHeight());
 			image = ImageIO.read(new File("/home/dccan/Pictures/sc.png"));
-			image = image.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_FAST);
 			Graphics graphics = panel.getGraphics();
 			graphics.drawImage(image, 0, 0, panel.getWidth(), panel.getHeight(), panel);
 			graphics.dispose();

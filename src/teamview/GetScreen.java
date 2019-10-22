@@ -2,17 +2,17 @@ package teamview;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GetScreen implements Runnable {
 	int port = 6677;
-	int frame = 15;
+	int frame = 10;
 	ServerSocket ser;
 	JPanel panel;
 	Image image;
@@ -35,23 +35,20 @@ public class GetScreen implements Runnable {
 		try {
 			while (run) {
 				Socket s = ser.accept();
-				//System.out.println("co ket noi");
-				ObjectInputStream cObjectInputStream = new ObjectInputStream(s.getInputStream());
-				{
-					ImageIcon imageIcon = (ImageIcon) cObjectInputStream.readObject();
-					image = imageIcon.getImage();
-					image = image.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-					Graphics graphics = panel.getGraphics();
-					graphics.drawImage(image, 0, 0, panel.getWidth(), panel.getHeight(), panel);
-					graphics.dispose();
-					try {
-						Thread.sleep(sleep);
-					} catch (Exception e) {
-					}
+				// System.out.println("co ket noi");
+
+				BufferedImage img = ImageIO.read(ImageIO.createImageInputStream(s.getInputStream()));
+				image = img;
+				image = image.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
+				Graphics graphics = panel.getGraphics();
+				graphics.drawImage(image, 0, 0, panel.getWidth(), panel.getHeight(), panel);
+				graphics.dispose();
+				try {
+					Thread.sleep(sleep);
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
-				cObjectInputStream.close();
 				s.close();
-				
 			}
 
 		} catch (Exception e) {

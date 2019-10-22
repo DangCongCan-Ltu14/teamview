@@ -4,22 +4,27 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 import remote.Giaotiep;
 
 public class Rmi implements Giaotiep {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Robot robo;
 	int h, w;
 	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	Rectangle rec ;
+	Rectangle rec;
+
 	public Rmi(Dimension dim) {
 		try {
 			robo = new Robot();
 			h = dim.height;
 			w = dim.width;
-			rec =new Rectangle(dim);
+			rec = new Rectangle(dim);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -30,66 +35,61 @@ public class Rmi implements Giaotiep {
 			robo = new Robot();
 			h = dim.height;
 			w = dim.width;
-			rec =new Rectangle(dim);
+			rec = new Rectangle(dim);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Override
 	public void keypress(int i) throws RemoteException {
 		robo.keyPress(i);
 	}
 
-	@Override
 	public void keyReleased(int i) throws RemoteException {
 		// TODO Auto-generated method stub
 		robo.keyRelease(i);
 
 	}
 
-	@Override
 	public void type(int code) throws RemoteException {
 		// TODO Auto-generated method stub
 		robo.keyPress(code);
 		robo.keyRelease(code);
 	}
 
-	@Override
 	public void move(int x, int y) throws RemoteException {
 		// TODO Auto-generated method stub
 		robo.mouseMove(x, y);
 		// BufferedImage screenFullImage = robo.
 	}
 
-	@Override
 	public void wheel(int i) throws RemoteException {
 		robo.mouseWheel(i);
 
 	}
 
-	@Override
 	public int[] size() throws RemoteException {
-		int [] k=new int [2];
-		k[0]=w;k[1]=h;
-		return k ;
+		int[] k = new int[2];
+		k[0] = w;
+		k[1] = h;
+		return k;
 	}
 
 	public void mouseclick(int a, int count) throws RemoteException {
-		if (a == InputEvent.BUTTON1_MASK)
-			robo.mousePress(a);
-		else if (a == InputEvent.BUTTON2_MASK)
-			robo.mousePress(a);
-		else if (a == InputEvent.BUTTON3_MASK)
-			robo.mousePress(a);
+		if (a == MouseEvent.BUTTON1)
+			robo.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
+		else if (a == MouseEvent.BUTTON2)
+			robo.mousePress(MouseEvent.BUTTON2_DOWN_MASK);
+		else if (a == MouseEvent.BUTTON3)
+			robo.mousePress(MouseEvent.BUTTON3_DOWN_MASK);
 	}
 
 	public void mouseReleased(int a, int count) throws RemoteException {
-		if (a == InputEvent.BUTTON1_MASK)
-			robo.mouseRelease(a);
-		else if (a == InputEvent.BUTTON2_MASK)
-			robo.mouseRelease(a);
-		else if (a == InputEvent.BUTTON3_MASK)
-			robo.mouseRelease(a);
+		if (a == MouseEvent.BUTTON1)
+			robo.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
+		else if (a == MouseEvent.BUTTON2)
+			robo.mouseRelease(MouseEvent.BUTTON2_DOWN_MASK);
+		else if (a == MouseEvent.BUTTON3)
+			robo.mouseRelease(MouseEvent.BUTTON3_DOWN_MASK);
 	}
 }

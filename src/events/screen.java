@@ -12,6 +12,7 @@ public class screen {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle rec = new Rectangle(dim);
 		System.out.println(dim.height+" "+dim.width);
+		show.pr(bobo.createScreenCapture(rec));
 		
 
 	}

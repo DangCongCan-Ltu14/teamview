@@ -2,9 +2,28 @@ package events;
 
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
+// this is a test for robot , i copy it in the intenet
+/**
+ * A Java Robot example class.
+ * 
+ * Caution: Using the Java Robot class improperly can cause a lot of system
+ * problems. I had to reboot my Mac ~10 times yesterday while trying to debug
+ * this code.
+ * 
+ * I created this class to demonstrate the Java Robot class on a Mac OS X
+ * system, though it should run on Linux or Windows as well.
+ * 
+ * On a Mac system, I place the TextEdit text editor in the upper-left corner of
+ * the screen, and put a bunch of blank lines in the editor. Then I run this
+ * Java Robot example from Eclipse or the Unix command line.
+ * 
+ * It types the three strings shown in the code below into the text editor.
+ *
+ * Many thanks to the people on the Mac Java-dev mailing list for your help.
+ * 
+ * @author Alvin Alexander, http://devdaily.com
+ *
+ */
 /**
  * A Java Robot example class.
  * 
@@ -35,53 +54,24 @@ public class JavaRobotExample {
 
 	public JavaRobotExample() throws AWTException {
 		robot.setAutoDelay(40);
-//		robot.setAutoWaitForIdle(true);
-//
-//		robot.delay(4000);
-//		robot.mouseMove(40, 130);
-//		robot.delay(500);
-//
-//		leftClick();
-//		robot.delay(500);
-//		leftClick();
-//
-//		robot.delay(500);
-//		type("Hello, world");
-//
-//		robot.mouseMove(40, 160);
-//		robot.delay(500);
-//
-//		leftClick();
-//		robot.delay(500);
-//		leftClick();
-//
-//		robot.delay(500);
-//		type("This is a test of the Java Robot class");
-//
-//		robot.delay(50);
-//		type(KeyEvent.VK_DOWN);
-//
-//		robot.delay(250);
-//		robot.keyPress(KeyEvent.VK_SHIFT);
-//		type("Four score and seven years ago, our fathers ...");
-		robot.mouseMove(1500, 500);
+		robot.delay(1000);
+//		robot.mouseMove(1500, 500);
+//		robot.mousePress(MouseEvent.BUTTON3_DOWN_MASK);
+//		robot.mouseRelease(MouseEvent.BUTTON3_DOWN_MASK);
+		robot.mouseWheel(4);
 		robot.delay(1000);
 		System.exit(0);
 	}
 
-	private void leftClick() {
-		robot.mousePress(InputEvent.BUTTON1_MASK);
-		robot.delay(200);
-		robot.mouseRelease(InputEvent.BUTTON1_MASK);
-		robot.delay(200);
-	}
 
+	@SuppressWarnings("unused")
 	private void type(int i) {
 		robot.delay(40);
 		robot.keyPress(i);
 		// robot.keyRelease(i);
 	}
 
+	@SuppressWarnings("unused")
 	private void type(String s) {
 		byte[] bytes = s.getBytes();
 		for (byte b : bytes) {

@@ -1,15 +1,15 @@
 package client;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 public class Screen implements Runnable {
 	int port = 6677;
@@ -21,6 +21,7 @@ public class Screen implements Runnable {
 	public static void main(String[] args) {
 		Screen sc = new Screen();
 		new Thread(sc).start();
+
 	}
 
 	public Screen() {
@@ -35,28 +36,23 @@ public class Screen implements Runnable {
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle rec = new Rectangle(dim);
 		int sleep = 1000 / 15;
+		int h = dim.height / 2;
+		int w = dim.width / 2;
+		System.out.println(h + "  " + w);
 
 		while (run) {
 			try {
 				Socket s = new Socket(host, port);
-				ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-
 				BufferedImage image = rb.createScreenCapture(rec);
-				ImageIcon imageIcon = new ImageIcon(image);
+				Image im = image.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+				image=cv(im);
+				ImageIO.write(image, "png", s.getOutputStream());
 				try {
-					out.writeObject(imageIcon);
-					out.reset(); // Clear ObjectOutputStream cache
-					System.out.println("New screenshot sent");
-					try {
-						Thread.sleep(sleep);
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
-
-				} catch (IOException ex) {
-					ex.printStackTrace();
+					Thread.sleep(sleep);
+				} catch (Exception e) {
+					// TODO: handle exception
 				}
-				out.close();
+
 				s.close();
 
 			} catch (Exception e) {
@@ -64,6 +60,14 @@ public class Screen implements Runnable {
 			}
 		}
 
+	}
+
+	public static BufferedImage cv(Image im) {
+		BufferedImage bi = new BufferedImage(im.getWidth(null), im.getHeight(null), BufferedImage.TYPE_INT_RGB);
+		Graphics bg = bi.getGraphics();
+		bg.drawImage(im, 0, 0, im.getWidth(null), im.getHeight(null), null);
+		bg.dispose();
+		return bi;
 	}
 
 }
