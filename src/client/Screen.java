@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 public class Screen implements Runnable {
 	int port = 6677;
 	String host = "localhost";
-	boolean run = true;
+	static boolean run = true;
 	Robot rb;
 	int frame = 15;
 
@@ -38,8 +38,6 @@ public class Screen implements Runnable {
 		int sleep = 1000 / 15;
 		int h = dim.height / 2;
 		int w = dim.width / 2;
-		System.out.println(h + "  " + w);
-
 		while (run) {
 			try {
 				Socket s = new Socket(host, port);
@@ -50,7 +48,6 @@ public class Screen implements Runnable {
 				try {
 					Thread.sleep(sleep);
 				} catch (Exception e) {
-					// TODO: handle exception
 				}
 
 				s.close();

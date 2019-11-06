@@ -16,14 +16,16 @@ public class GetScreen implements Runnable {
 	ServerSocket ser;
 	JPanel panel;
 	Image image;
-	boolean run = true;
+	static boolean run = true;
+	String host;
 
-	public GetScreen(JPanel jp, Image im) {
+	public GetScreen(JPanel jp, Image im, String s) {
 		try {
 			System.out.println("start");
 			panel = jp;
 			image = im;
 			ser = new ServerSocket(port);
+			host = s;
 		} catch (IOException e) {
 			System.out.println("loi port");
 			e.printStackTrace();
@@ -35,20 +37,26 @@ public class GetScreen implements Runnable {
 		try {
 			while (run) {
 				Socket s = ser.accept();
-				// System.out.println("co ket noi");
-
-				BufferedImage img = ImageIO.read(ImageIO.createImageInputStream(s.getInputStream()));
-				image = img;
-				image = image.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
-				Graphics graphics = panel.getGraphics();
-				graphics.drawImage(image, 0, 0, panel.getWidth(), panel.getHeight(), panel);
-				graphics.dispose();
+				if (s.getLocalAddress().getHostAddress() .equals(host)) {
+					BufferedImage img = ImageIO.read(ImageIO.createImageInputStream(s.getInputStream()));
+					image = img;
+					image = image.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_SMOOTH);
+					Graphics graphics = panel.getGraphics();
+					graphics.drawImage(image, 0, 0, panel.getWidth(), panel.getHeight(), panel);
+					graphics.dispose();
+				}
+				else
+				{
+					System.out.println(s.getLocalAddress().getHostAddress());
+					System.out.println(host+"    sad ");
+				}
+				s.close();
 				try {
 					Thread.sleep(sleep);
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
-				s.close();
+
 			}
 
 		} catch (Exception e) {

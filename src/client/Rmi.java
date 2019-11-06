@@ -18,6 +18,7 @@ public class Rmi implements Giaotiep {
 	int h, w;
 	Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	Rectangle rec;
+	protected static boolean run = true;
 
 	public Rmi(Dimension dim) {
 		try {
@@ -42,29 +43,35 @@ public class Rmi implements Giaotiep {
 	}
 
 	public void keypress(int i) throws RemoteException {
-		robo.keyPress(i);
+		if (run)
+			robo.keyPress(i);
 	}
 
 	public void keyReleased(int i) throws RemoteException {
 		// TODO Auto-generated method stub
-		robo.keyRelease(i);
+		if (run)
+			robo.keyRelease(i);
 
 	}
 
 	public void type(int code) throws RemoteException {
 		// TODO Auto-generated method stub
-		robo.keyPress(code);
-		robo.keyRelease(code);
+		if (run)
+			robo.keyPress(code);
+		if (run)
+			robo.keyRelease(code);
 	}
 
 	public void move(int x, int y) throws RemoteException {
 		// TODO Auto-generated method stub
-		robo.mouseMove(x, y);
+		if (run)
+			robo.mouseMove(x, y);
 		// BufferedImage screenFullImage = robo.
 	}
 
 	public void wheel(int i) throws RemoteException {
-		robo.mouseWheel(i);
+		if (run)
+			robo.mouseWheel(i);
 
 	}
 
@@ -76,20 +83,31 @@ public class Rmi implements Giaotiep {
 	}
 
 	public void mouseclick(int a, int count) throws RemoteException {
-		if (a == MouseEvent.BUTTON1)
-			robo.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
-		else if (a == MouseEvent.BUTTON2)
-			robo.mousePress(MouseEvent.BUTTON2_DOWN_MASK);
-		else if (a == MouseEvent.BUTTON3)
-			robo.mousePress(MouseEvent.BUTTON3_DOWN_MASK);
+		if (run) {
+			if (a == MouseEvent.BUTTON1)
+				robo.mousePress(MouseEvent.BUTTON1_DOWN_MASK);
+			else if (a == MouseEvent.BUTTON2)
+				robo.mousePress(MouseEvent.BUTTON2_DOWN_MASK);
+			else if (a == MouseEvent.BUTTON3)
+				robo.mousePress(MouseEvent.BUTTON3_DOWN_MASK);
+		}
 	}
 
 	public void mouseReleased(int a, int count) throws RemoteException {
-		if (a == MouseEvent.BUTTON1)
-			robo.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
-		else if (a == MouseEvent.BUTTON2)
-			robo.mouseRelease(MouseEvent.BUTTON2_DOWN_MASK);
-		else if (a == MouseEvent.BUTTON3)
-			robo.mouseRelease(MouseEvent.BUTTON3_DOWN_MASK);
+		if (run) {
+			if (a == MouseEvent.BUTTON1)
+				robo.mouseRelease(MouseEvent.BUTTON1_DOWN_MASK);
+			else if (a == MouseEvent.BUTTON2)
+				robo.mouseRelease(MouseEvent.BUTTON2_DOWN_MASK);
+			else if (a == MouseEvent.BUTTON3)
+				robo.mouseRelease(MouseEvent.BUTTON3_DOWN_MASK);
+		}
 	}
+
+	
+//	public void close() throws RemoteException {
+//		// TODO Auto-generated method stub
+//		run = false;
+//		System.out.println("close");
+//	}
 }

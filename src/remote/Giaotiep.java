@@ -20,4 +20,6 @@ public interface Giaotiep extends Remote , Serializable{
 	public void mouseclick(int a, int count) throws RemoteException;
 
 	public void mouseReleased(int a, int count) throws RemoteException;
+	
+//	public void close() throws RemoteException ;
 }

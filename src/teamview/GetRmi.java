@@ -15,7 +15,7 @@ public class GetRmi {
 			System.out.println("tao thanh cong");
 			return c;
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null ;
 		}
 	}

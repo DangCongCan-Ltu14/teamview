@@ -25,24 +25,32 @@ import teamview.act.WheelCapture;
  * author: amneiht - dang cong can
  */
 public class App extends JFrame {
+	public static String status="chua co gi";
 	public static void main(String[] args) {
-		App d = new App("192.168.1.24");
-		//App d = new App();
-		GetScreen sc = new GetScreen(d.panel, d.image);
-		new Thread(sc).start();
+		new App("127.0.0.1");
 	}
 
 	public Giaotiep trmi;
 
 	public App(String s) {
 		trmi = GetRmi.get(s);
-		init();
+		if (trmi != null) {
+			status="ok";
+			init();
+			GetScreen.run=true;
+			GetScreen sc = new GetScreen(this.panel, this.image, s);
+			new Thread(sc).start();
+		}else
+		{
+			status="err";
+		}
 	}
 
 	public App() {
 		//
 		trmi = new Rmi();
 		init();
+		new GetScreen(this.panel, this.image, "localhost");
 	}
 
 	private void init() {
@@ -50,19 +58,19 @@ public class App extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		this.setVisible(true);
-		// this.setDefaultCloseOperation);
 		JMenu mnMenu = new JMenu("menu");
 		menuBar.add(mnMenu);
 		this.setSize(1000, 700);
 
 		JTextField textField = new JTextField();
 		textField.setColumns(10);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		addKeyListener(new KeyCapture(trmi));
 		addMouseWheelListener(new WheelCapture(trmi));
 		panel = new JPanel();
 		panel.setFocusable(true);
-		
+
 		panel.addMouseListener(new MouseCapture(trmi));
 		panel.addMouseMotionListener(new MoveCapture(panel, trmi));
 
@@ -100,7 +108,7 @@ public class App extends JFrame {
 			graphics.dispose();
 		}
 	}
-
+//public exit()
 	protected void paindraw() {
 		try {
 			System.out.println(panel.getWidth() + "  " + panel.getHeight());
